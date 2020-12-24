@@ -37,7 +37,7 @@ fun Canvas.drawInvertedTriangleDivider(scale : Float, w : Float, h : Float, pain
     val sf2 : Float = sf.divideScale(1, parts)
     val sf3 : Float = sf.divideScale(2, parts)
     val size : Float = Math.min(w, h) / sizeFactor
-    val gap : Float = size * Math.cos(Math.PI  / 4).toFloat()
+    val gap : Float = (size * Math.cos(Math.PI  / 4).toFloat()) / lines
     save()
     translate(w / 2, h / 2)
     for (j in 0..1) {
@@ -166,6 +166,29 @@ class InvertedTriangleDividerView(ctx : Context) : View(ctx) {
             }
             cb()
             return this
+        }
+
+        data class InvertedTriangleDivider(var i : Int) {
+
+            private var curr : ITDNode = ITDNode(0)
+            private var dir : Int = 1
+
+            fun draw(canvas : Canvas, paint : Paint) {
+                curr.draw(canvas, paint)
+            }
+
+            fun update(cb : (Float) -> Unit) {
+                curr.update {
+                    curr = curr.getNext(dir) {
+                        dir *= -1
+                    }
+                    cb(it)
+                }
+            }
+
+            fun startUpdating(cb : () -> Unit) {
+                curr.startUpdating(cb)
+            }
         }
     }
 }
