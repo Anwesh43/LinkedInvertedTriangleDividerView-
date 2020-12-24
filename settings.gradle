@@ -1,0 +1,3 @@
+include ':invertedtriangledividerview'
+include ':app'
+rootProject.name = "LinkedInvertedTriangleDividerView"
