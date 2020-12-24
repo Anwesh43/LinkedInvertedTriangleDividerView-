@@ -30,3 +30,37 @@ fun Int.inverse() : Float = 1f / this
 fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this - i * n.inverse())
 fun Float.divideScale(i : Int, n : Int) : Float = Math.min(n.inverse(), maxScale(i, n)) * n
 fun Float.sinify() : Float = Math.sin(this * Math.PI).toFloat()
+
+fun Canvas.drawInvertedTriangleDivider(scale : Float, w : Float, h : Float, paint : Paint) {
+    val sf : Float = scale.sinify()
+    val sf1 : Float = sf.divideScale(0, parts)
+    val sf2 : Float = sf.divideScale(1, parts)
+    val sf3 : Float = sf.divideScale(2, parts)
+    val size : Float = Math.min(w, h) / sizeFactor
+    val gap : Float = size * Math.cos(Math.PI  / 4).toFloat()
+    save()
+    translate(w / 2, h / 2)
+    for (j in 0..1) {
+        save()
+        rotate(deg * sf2 * (1 - 2 * j))
+        drawLine(0f, 0f, 0f, -size * sf1, paint)
+        for (k in 0..(lines - 1)) {
+            val sf3k : Float = sf3.divideScale(k, lines)
+            save()
+            translate(0f, (-size + k * gap))
+            drawLine(-gap * sf3k, 0f, gap * sf3k, 0f, paint)
+            restore()
+        }
+        restore()
+    }
+    restore()
+}
+
+fun Canvas.drawITDNode(i : Int, scale : Float, paint : Paint) {
+    val w : Float = width.toFloat()
+    val h : Float = height.toFloat()
+    paint.color = colors[i]
+    paint.strokeCap = Paint.Cap.ROUND
+    paint.strokeWidth = Math.min(w, h) / strokeFactor
+    drawInvertedTriangleDivider(scale, w, h, paint)
+}
