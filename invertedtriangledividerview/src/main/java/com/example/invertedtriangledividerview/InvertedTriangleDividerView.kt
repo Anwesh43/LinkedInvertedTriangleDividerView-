@@ -196,7 +196,7 @@ class InvertedTriangleDividerView(ctx : Context) : View(ctx) {
 
         private val paint : Paint = Paint(Paint.ANTI_ALIAS_FLAG)
         private val itd : InvertedTriangleDivider = InvertedTriangleDivider(0)
-        private val animator : Animator = Animator(this)
+        private val animator : Animator = Animator(view)
 
         fun render(canvas : Canvas) {
             canvas.drawColor(backColor)
