@@ -216,4 +216,13 @@ class InvertedTriangleDividerView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : InvertedTriangleDividerView {
+            val view : InvertedTriangleDividerView = InvertedTriangleDividerView(activity)
+            activity.setContentView(view)
+            return view
+        }
+    }
 }
