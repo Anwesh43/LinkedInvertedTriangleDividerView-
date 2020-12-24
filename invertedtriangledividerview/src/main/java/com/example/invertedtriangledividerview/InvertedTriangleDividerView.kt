@@ -37,20 +37,21 @@ fun Canvas.drawInvertedTriangleDivider(scale : Float, w : Float, h : Float, pain
     val sf2 : Float = sf.divideScale(1, parts)
     val sf3 : Float = sf.divideScale(2, parts)
     val size : Float = Math.min(w, h) / sizeFactor
-    val gap : Float = (size * Math.cos(Math.PI  / 4).toFloat()) / lines
+    val total : Float = (size * Math.cos(Math.PI  / 4).toFloat())
+    val gap : Float = total / lines
     save()
     translate(w / 2, h / 2)
     for (j in 0..1) {
         save()
         rotate(deg * sf2 * (1 - 2 * j))
         drawLine(0f, 0f, 0f, -size * sf1, paint)
-        for (k in 0..(lines - 1)) {
-            val sf3k : Float = sf3.divideScale(k, lines)
-            save()
-            translate(0f, (-size + k * gap))
-            drawLine(-gap * sf3k, 0f, gap * sf3k, 0f, paint)
-            restore()
-        }
+        restore()
+    }
+    for (k in 0..(lines - 1)) {
+        val sf3k : Float = sf3.divideScale(k, lines)
+        save()
+        translate(0f, -(total - k * gap) * sf3k)
+        drawLine(-(total - k * gap) * sf3k, 0f, (total - k * gap) * sf3k, 0f, paint)
         restore()
     }
     restore()
